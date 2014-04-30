@@ -93,77 +93,18 @@ module.exports = function ( grunt ) {
      * `build_dir`, and then to copy the assets to `compile_dir`.
      */
     copy: {
-      build_app_assets: {
+      build_docs_all: {
         files: [
           { 
-            src: [ '**' ],
-            dest: '<%= build_dir %>/assets/',
-            cwd: 'src/assets',
-            expand: true
-          }
-       ]   
-      },
-      build_vendor_assets: {
-        files: [
-          { 
-            src: [ '<%= vendor_files.assets %>' ],
-            dest: '<%= build_dir %>/assets/',
+            src: [ '<%= app_files.all %>' ],
+            dest: '<%= build_dir %>/',
             cwd: '.',
             expand: true,
-            flatten: true
+            flatten: false
           }
        ]   
-      },
-      build_appjs: {
-        files: [
-          {
-            src: [ '<%= app_files.js %>' ],
-            dest: '<%= build_dir %>/',
-            cwd: '.',
-            expand: true
-          }
-        ]
-      },
-      build_vendorjs: {
-        files: [
-          {
-            src: [ '<%= vendor_files.js %>', '<%= vendor_files.require_js %>',  '<%= vendor_files.test_js %>'],
-            dest: '<%= build_dir %>/',
-            cwd: '.',
-            expand: true
-          }
-        ]
-      },
-      build_apptpl: {
-        files: [
-          {
-            src: [ '<%= app_files.atpl %>', '<%= app_files.ctpl %>' ],
-            dest: '<%= build_dir %>/',
-            cwd: '.',
-            expand: true
-          }
-        ]
-      },
-      compile_vendorjs: {
-          files: [
-              {
-                src: [ '<%= vendor_files.require_js_compile %>'],
-                dest: '<%= compile_dir %>/',
-                cwd: '.',
-                expand: true
-              }
-          ]
-      },
-      compile_assets: {
-        files: [
-          {
-            src: [ '**' ],
-            dest: '<%= compile_dir %>/assets',
-            cwd: '<%= build_dir %>/assets',
-            expand: true
-          }
-        ]
       }
+
     },
 
     /**
@@ -191,7 +132,7 @@ module.exports = function ( grunt ) {
     less: {
       build: {
         src: [ '<%= app_files.less %>' ],
-        dest: '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css',
+        dest: '<%= build_dir %>/src/docs/dist/css/bootstrap.min.css',
         options: {
           compile: true,
           compress: false,
@@ -203,6 +144,28 @@ module.exports = function ( grunt ) {
       compile: {
         src: [ '<%= less.build.dest %>' ],
         dest: '<%= less.build.dest %>',
+        options: {
+          compile: true,
+          compress: true,
+          noUnderscores: false,
+          noIDs: false,
+          zeroUnits: false
+        }
+      },
+      buildtheme: {
+        src: [ '<%= app_files.themeless %>' ],
+        dest: '<%= build_dir %>/src/docs/dist/css/bootstrap-theme.min.css',
+        options: {
+          compile: true,
+          compress: false,
+          noUnderscores: false,
+          noIDs: false,
+          zeroUnits: false
+        }
+      },
+      compiletheme: {
+        src: [ '<%= less.buildtheme.dest %>' ],
+        dest: '<%= less.buildtheme.dest %>',
         options: {
           compile: true,
           compress: true,
@@ -283,30 +246,11 @@ module.exports = function ( grunt ) {
       },
 
       /**
-       * When assets are changed, copy them. Note that this will *not* copy new
-       * files, so this is probably not very useful.
-       */
-      assets: {
-        files: [ 
-          'src/assets/**/*'
-        ],
-        tasks: [ 'copy:build_assets' ]
-      },
-
-      /**
-       * When index.html changes, we need to compile it.
-       */
-      html: {
-        files: [ '<%= app_files.html %>' ],
-        tasks: [ 'index:build' ]
-      },
-
-      /**
        * When the CSS files change, we need to compile and minify them.
        */
       less: {
         files: [ 'src/**/*.less' ],
-        tasks: [ 'less:build' ]
+        tasks: [ 'less:build', 'less:buildtheme' ]
       }
 
     }
@@ -333,9 +277,8 @@ module.exports = function ( grunt ) {
    * The `build` task gets your app ready to run for development and testing.
    */
   grunt.registerTask( 'build', [
-    'clean', 'less:build',
-    'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets',
-    'copy:build_appjs', 'copy:build_vendorjs', 'copy:build_apptpl'
+    'clean', 'less:build', 'less:buildtheme',
+    'concat:build_css', 'copy:build_docs_all'
   ]);
 
   /**
@@ -343,7 +286,7 @@ module.exports = function ( grunt ) {
    * minifying your code.
    */
   grunt.registerTask( 'compile', [
-    'less:compile', 'copy:compile_assets', 'copy:compile_vendorjs'
+    'less:compile'
   ]);
 
 };

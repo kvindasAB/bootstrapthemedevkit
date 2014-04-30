@@ -20,26 +20,9 @@ module.exports = {
    * app's unit tests.
    */
   app_files: {
-    js: [ 'src/**/*.js', '!src/**/*.spec.js', '!src/assets/**/*.js' ],
-    jsunit: [ 'test/unit/**/*.spec.js' ],
-
-    coffee: [ 'src/**/*.coffee', '!src/**/*.spec.coffee' ],
-    coffeeunit: [ 'src/**/*.spec.coffee' ],
-
-    atpl: [ 'src/app/**/*.tpl.html' ],
-    ctpl: [ 'src/common/**/*.tpl.html' ],
-
-    html: [ 'src/index.html' ],
-    less: 'src/less/main.less'
-  },
-
-  /**
-   * This is a collection of files used during testing only.
-   */
-  test_files: {
-    js: [
-      'vendor/angular-mocks/angular-mocks.js'
-    ]
+    all: [ 'src/docs/**/*'],
+    less: 'src/less/main.less',
+    themeless: 'src/less/theme.less'
   },
 
   /**
@@ -62,28 +45,7 @@ module.exports = {
    */
   vendor_files: {
     js: [
-      'vendor/angular/angular.js',
-      'vendor/angular-bootstrap/ui-bootstrap-tpls.min.js',
-      'vendor/angular-ui-router/release/angular-ui-router.min.js',
-      'vendor/angular-ui-utils/ui-utils.min.js',
-      'vendor/angular-moment/angular-moment.min.js',
-      'vendor/restangular/dist/restangular.min.js',
-      'vendor/ng-table/ng-table.js',
-
-      'vendor/lodash/dist/lodash.min.js',
-      'vendor/moment/min/moment.min.js',
-      'vendor/placeholders/angular-placeholders-0.0.1-SNAPSHOT.min.js',
-    ],
-    require_js_compile: [
-      'vendor/requirejs/require.js'
-    ],
-    require_js: [
-      'vendor/requirejs/require.js',
-      'vendor/requirejs-domready/domReady.js',
-      'vendor/requirejs-text/text.js'
-    ],
-    test_js: [
-      'vendor/angular-mocks/angular-mocks.js'
+      'vendor/bootstrap/dist/js/bootstrap.js'
     ],
     css: [
     ],
