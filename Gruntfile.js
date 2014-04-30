@@ -186,7 +186,7 @@ module.exports = function ( grunt ) {
     connect: {
       options: {
         port: 8000,
-        base: '<%= build_dir %>/'
+        base: '<%= build_dir %>/src/docs'
       },
       server: {
         options: {
